@@ -11,7 +11,7 @@ from bedrock_protocol.packets import *  # pylint: disable=wildcard-import,unused
 
 
 def test1():
-    packet_write = UpdateBlockPacket(NetworkBlockPosition(11, 45, 14), 2537812, 3, 0)
+    packet_write = UpdateBlockPacket(BlockPos(11, 45, 14), 2537812, 3, 0)
     payload = packet_write.serialize()
     print(f"{payload.hex()} | {payload.hex()=='162d1cd4f29a010300'}")
 

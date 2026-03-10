@@ -8,27 +8,27 @@
 from typing import Optional
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from bedrock_protocol.packets.minecraft_packet_ids import MinecraftPacketIds
-from bedrock_protocol.packets.types.network_position import NetworkBlockPosition
+from bedrock_protocol.packets.types.block_pos import BlockPos
 from bedrock_protocol.packets.packet.packet_base import Packet
 
 
 class ContainerOpenPacket(Packet):
     container_id: int
     container_type: int
-    position: NetworkBlockPosition
+    position: BlockPos
     target_actor_id: int
 
     def __init__(
         self,
         container_id: int = 0,
         container_type: int = 0,
-        block_position: Optional[NetworkBlockPosition] = None,
+        block_position: Optional[BlockPos] = None,
         target_actor_id: int = -1,
     ):
         super().__init__()
         self.container_id = container_id
         self.container_type = container_type
-        self.position = block_position or NetworkBlockPosition()
+        self.position = block_position or BlockPos()
         self.target_actor_id = target_actor_id
 
     def get_packet_id(self) -> MinecraftPacketIds:

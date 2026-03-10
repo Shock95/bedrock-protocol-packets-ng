@@ -9,8 +9,8 @@
 class SharedConstants:
     @staticmethod
     def get_network_protocol_version() -> int:
-        return 860
+        return 944
 
     @staticmethod
     def get_minecraft_version() -> str:
-        return "1.21.124"
+        return "26.10"

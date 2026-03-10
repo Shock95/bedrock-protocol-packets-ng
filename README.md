@@ -11,7 +11,7 @@ pip install bedrock-protocol-packets
 from bedrock_protocol.packets import UpdateBlockPacket
 
 # Serialize Packet
-packet_write = UpdateBlockPacket(NetworkBlockPosition(11, 45, 14), 2537812, 3, 0)
+packet_write = UpdateBlockPacket(BlockPos(11, 45, 14), 2537812, 3, 0)
 payload = packet_write.serialize()
 
 # Deserialize Packet

@@ -5,9 +5,8 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-from bedrock_protocol.packets.types.network_position import NetworkBlockPosition
-from bedrock_protocol.packets.types.mce_uuid import UUID
 from bedrock_protocol.packets.types.block_pos import BlockPos
+from bedrock_protocol.packets.types.mce_uuid import UUID
 from bedrock_protocol.packets.types.vec3 import Vec3
 from bedrock_protocol.packets.types.item_data import ItemData
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
@@ -21,7 +20,7 @@ from bedrock_protocol.packets.types.item_stack_request import (
 from bedrock_protocol.packets.types.connection_request import ConnectionRequest
 
 __all__ = [
-    "NetworkBlockPosition",
+    "BlockPos",
     "UUID",
     "BlockPos",
     "Vec3",

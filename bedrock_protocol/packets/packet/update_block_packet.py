@@ -9,24 +9,24 @@ from typing import Optional
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from bedrock_protocol.packets.packet.packet_base import Packet
 from bedrock_protocol.packets.minecraft_packet_ids import MinecraftPacketIds
-from bedrock_protocol.packets.types.network_position import NetworkBlockPosition
+from bedrock_protocol.packets.types.block_pos import BlockPos
 
 
 class UpdateBlockPacket(Packet):
-    block_position: NetworkBlockPosition
+    block_position: BlockPos
     block_runtime_id: int
     update_flag: int
     block_layer: int
 
     def __init__(
         self,
-        pos: Optional[NetworkBlockPosition] = None,
+        pos: Optional[BlockPos] = None,
         runtime_id: int = 0,
         flag: int = 0,
         layer: int = 0,
     ):
         super().__init__()
-        self.block_position = pos or NetworkBlockPosition()
+        self.block_position = pos or BlockPos()
         self.block_runtime_id = runtime_id
         self.update_flag = flag
         self.block_layer = layer
