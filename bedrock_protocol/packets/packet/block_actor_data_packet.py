@@ -5,24 +5,25 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
+from typing import Optional
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from rapidnbt import CompoundTag
 from bedrock_protocol.packets.packet.packet_base import Packet
 from bedrock_protocol.packets.minecraft_packet_ids import MinecraftPacketIds
-from bedrock_protocol.packets.types.network_position import NetworkBlockPosition
+from bedrock_protocol.packets.types.block_pos import BlockPos
 
 
 class BlockActorDataPacket(Packet):
-    block_position: NetworkBlockPosition
+    block_position: BlockPos
     actor_data_tags: CompoundTag
 
     def __init__(
         self,
-        pos: NetworkBlockPosition | None = None,
-        nbt: CompoundTag | None = None,
+        pos: Optional[BlockPos] = None,
+        nbt: Optional[CompoundTag] = None,
     ):
         super().__init__()
-        self.block_position = pos or NetworkBlockPosition()
+        self.block_position = pos or BlockPos()
         self.actor_data_tags = nbt or CompoundTag()
 
     def get_packet_id(self) -> MinecraftPacketIds:

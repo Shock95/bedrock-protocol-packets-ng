@@ -5,12 +5,10 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
+from enum import IntEnum
 
-class SharedConstants:
-    @staticmethod
-    def get_network_protocol_version() -> int:
-        return 944
 
-    @staticmethod
-    def get_minecraft_version() -> str:
-        return "26.10"
+class AuthenticationType(IntEnum):
+    FULL = 0
+    GUSET = 1
+    SELF_SIGNED = 2
