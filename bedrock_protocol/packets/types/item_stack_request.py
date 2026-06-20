@@ -43,26 +43,36 @@ class ItemStackRequestActionTransferBase:
     amount: int
     source: ItemStackRequestSlotInfo
     distination: ItemStackRequestSlotInfo
+    is_dst_serialized: bool
+    is_amt_serialized: bool
 
     def __init__(
         self,
         amount: int = 0,
         source: Optional[ItemStackRequestSlotInfo] = None,
         distination: Optional[ItemStackRequestSlotInfo] = None,
+        is_dst_serialized: bool = True,
+        is_amt_serialized: bool = True,
     ):
         self.amount = amount
         self.source = source or ItemStackRequestSlotInfo()
         self.distination = distination or ItemStackRequestSlotInfo()
+        self.is_dst_serialized = is_dst_serialized
+        self.is_amt_serialized = is_amt_serialized
 
     def write(self, stream: BinaryStream) -> None:
-        stream.write_byte(self.amount)
+        if self.is_amt_serialized:
+            stream.write_byte(self.amount)
         self.source.write(stream)
-        self.distination.write(stream)
+        if self.is_dst_serialized:
+            self.distination.write(stream)
 
     def read(self, stream: ReadOnlyBinaryStream) -> None:
-        self.amount = stream.get_byte()
+        if self.is_amt_serialized:
+            self.amount = stream.get_byte()
         self.source.read(stream)
-        self.distination.read(stream)
+        if self.is_dst_serialized:
+            self.distination.read(stream)
 
 
 class ItemStackRequestAction:
@@ -87,11 +97,16 @@ class ItemStackRequestAction:
         if self.action_type in (
             ItemStackRequestActionType.Take,
             ItemStackRequestActionType.Place,
+            ItemStackRequestActionType.Swap,
+            ItemStackRequestActionType.Drop
         ):
             data = ItemStackRequestActionTransferBase()
+            if self.action_type == ItemStackRequestActionType.Swap:
+                data.is_amt_serialized = False
+            elif self.action_type == ItemStackRequestActionType.Drop:
+                data.is_dst_serialized = False
             data.read(stream)
             self.action_data = data
-
 
 class ItemStackRequestData:
     client_request_id: int
