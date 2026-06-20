@@ -24,6 +24,9 @@ from bedrock_protocol.packets.packet.item_registry_packet import ItemRegistryPac
 from bedrock_protocol.packets.packet.item_stack_request_packet import (
     ItemStackRequestPacket,
 )
+from bedrock_protocol.packets.packet.item_stack_response_packet import (
+    ItemStackResponsePacket,
+)
 
 __all__ = [
     "Packet",
@@ -38,5 +41,6 @@ __all__ = [
     "LevelSoundEventPacket",
     "ItemRegistryPacket",
     "ItemStackRequestPacket",
+    "ItemStackResponsePacket",
     "NetworkStackLatencyPacket",
 ]

@@ -17,6 +17,11 @@ from bedrock_protocol.packets.types.item_stack_request import (
     ItemStackRequestData,
     ItemStackRequest,
 )
+from bedrock_protocol.packets.types.item_stack_response import (
+    ItemStackResponse,
+    ItemStackResponseSlotInfo,
+    ItemStackResponseContainerInfo
+)
 from bedrock_protocol.packets.types.connection_request import ConnectionRequest
 
 __all__ = [
@@ -31,5 +36,8 @@ __all__ = [
     "ItemStackRequestAction",
     "ItemStackRequestData",
     "ItemStackRequest",
+    "ItemStackResponse",
+    "ItemStackResponseSlotInfo",
+    "ItemStackResponseContainerInfo",
     "ConnectionRequest",
 ]
