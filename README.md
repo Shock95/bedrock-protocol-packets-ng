@@ -1,9 +1,9 @@
-# bedrock-protocol-packets
+# bedrock-protocol-packets-ng
 Part of Bedrock Protocol Library. Minecraft Bedrock Packets Codec Library.
 
 ## Install
 ```bash
-pip install bedrock-protocol-packets
+pip install bedrock-protocol-packets-ng
 ```
 
 ## Usage
