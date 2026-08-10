@@ -12,7 +12,10 @@ from bedrock_protocol.packets.types.item_data import ItemData
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
 from bedrock_protocol.packets.types.item_stack_request import (
     ItemStackRequestSlotInfo,
-    ItemStackRequestActionTransferBase,
+    TakeAction,
+    PlaceAction,
+    SwapAction,
+    DropAction,
     ItemStackRequestAction,
     ItemStackRequestData,
     ItemStackRequest,
@@ -32,7 +35,6 @@ __all__ = [
     "ItemData",
     "FullContainerName",
     "ItemStackRequestSlotInfo",
-    "ItemStackRequestActionTransferBase",
     "ItemStackRequestAction",
     "ItemStackRequestData",
     "ItemStackRequest",

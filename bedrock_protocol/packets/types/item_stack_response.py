@@ -5,19 +5,21 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-from typing import List, Optional
+from typing import List, Optional, Self
 
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
+from bedrock_protocol.serializer.common_types import write_double_optional, read_double_optional, read_list, write_list, \
+    read_optional, write_optional
 
 
 class ItemStackResponseSlotInfo:
     slot: int
     hotbar_slot: int
     count: int
-    item_stack_id: int
+    item_stack_id: int | None
     custom_name: str
-    filtered_custom_name: str
+    filtered_custom_name: str | None
     durability_correction: int
 
     def __init__(
@@ -25,9 +27,9 @@ class ItemStackResponseSlotInfo:
         slot: int = 0,
         hotbar_slot: int = 0,
         count: int = 0,
-        item_stack_id: int = 0,
+        item_stack_id: int | None = None,
         custom_name: str = "",
-        filtered_custom_name: str = "",
+        filtered_custom_name: str | None = None,
         durability_correction: int = 0,
     ):
         self.slot = slot
@@ -42,18 +44,25 @@ class ItemStackResponseSlotInfo:
         stream.write_byte(self.slot)
         stream.write_byte(self.hotbar_slot)
         stream.write_byte(self.count)
-        stream.write_varint(self.item_stack_id)
+        write_double_optional(
+            stream,
+            self.item_stack_id,
+            lambda s, v: s.write_varint(v)
+        )
         stream.write_string(self.custom_name)
-        stream.write_string(self.filtered_custom_name)
+        write_optional(stream, self.filtered_custom_name, lambda s, v: s.write_string(v))
         stream.write_varint(self.durability_correction)
 
     def read(self, stream: ReadOnlyBinaryStream) -> None:
         self.slot = stream.get_byte()
         self.hotbar_slot = stream.get_byte()
         self.count = stream.get_byte()
-        self.item_stack_id = stream.get_varint()
+        self.item_stack_id = read_double_optional(
+            stream,
+            lambda s: s.get_varint()
+        )
         self.custom_name = stream.get_string()
-        self.filtered_custom_name = stream.get_string()
+        self.filtered_custom_name = read_optional(stream, lambda s: s.get_string())
         self.durability_correction = stream.get_varint()
 
 
@@ -89,7 +98,7 @@ class ItemStackResponseContainerInfo:
 class ItemStackResponse:
     result: int
     request_id: int
-    container_infos: List[ItemStackResponseContainerInfo]
+    container_infos: List[ItemStackResponseContainerInfo] | None
 
     RESULT_OK = 0
     RESULT_ERROR = 1
@@ -101,23 +110,27 @@ class ItemStackResponse:
     ):
         self.result = result
         self.request_id = request_id
-        self.container_infos = container_infos or []
+        self.container_infos = container_infos or None
 
     def write(self, stream: BinaryStream) -> None:
         stream.write_byte(self.result)
         stream.write_varint(self.request_id)
-        if self.result == self.RESULT_OK:
-            stream.write_unsigned_varint(len(self.container_infos))
-            for container_info in self.container_infos:
-                container_info.write(stream)
+        write_double_optional(
+            stream,
+            self.container_infos,
+            lambda out, container_infos: write_list(out, container_infos, lambda o, v: v.write(o))
+        )
+
+    @staticmethod
+    def read_container(stream: ReadOnlyBinaryStream) -> ItemStackResponseContainerInfo:
+        container_info = ItemStackResponseContainerInfo()
+        container_info.read(stream)
+        return container_info
 
     def read(self, stream: ReadOnlyBinaryStream) -> None:
         self.result = stream.get_byte()
         self.request_id = stream.get_varint()
-        self.container_infos = []
-        if self.result == self.RESULT_OK:
-            count = stream.get_unsigned_varint()
-            for _ in range(count):
-                container_info = ItemStackResponseContainerInfo()
-                container_info.read(stream)
-                self.container_infos.append(container_info)
+        self.container_infos = read_double_optional(
+            stream,
+            lambda s: read_list(s, self.read_container)
+        )

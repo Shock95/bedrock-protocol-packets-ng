@@ -4,10 +4,17 @@
 # distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # SPDX-License-Identifier: MPL-2.0
+from enum import Enum
+from typing import Any, cast
 
+from bstream._bstream import BinaryStream
+from endstone_inventoryui.network.container_ui_ids import ContainerUIIds
+
+from bedrock_protocol.packets.enums import ItemStackRequestActionType
 from bedrock_protocol.packets.packet import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from bedrock_protocol.packets.types import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from bedrock_protocol.packets import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from bedrock_protocol.packets.types.item_stack_request import TakeAction
 
 
 def test1():
@@ -39,9 +46,31 @@ def test2():
     print("All packets default constructor test pass")  # if no exception
 
 
+def test_item_stack_request():
+    # ItemStackRequest payload: item taken from chest to cursor inventory (slot 0)
+    payload = b"\x01\xd5\x03\x01\x00\x00\x01\x07\x00\x00\x01\x00\x00\x00;\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff"
+    pk = ItemStackRequestPacket()
+    pk.deserialize(payload)
+
+    assert len(pk.request.request_data) == 1
+    request_data = pk.request.request_data[0]
+
+    assert len(request_data.actions) == 1
+    request_action = request_data.actions[0]
+
+    assert request_action.type == ItemStackRequestActionType.Take
+    request_action = cast(TakeAction, request_action)
+
+    assert request_action.source.container.container_enum == ContainerUIIds.LEVEL_ENTITY
+    assert request_action.destination.container.container_enum == ContainerUIIds.CURSOR
+
+    print("ItemStackRequest test passed")
+
 if __name__ == "__main__":
     print("-" * 25, "Test1", "-" * 25)
     test1()
     print("-" * 25, "Test2", "-" * 25)
     test2()
+    print("-" * 25, "Test3", "-" * 25)
+    test_item_stack_request()
     print("-" * 25, "END", "-" * 25)
