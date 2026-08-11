@@ -52,8 +52,8 @@ def test_item_stack_request():
     pk = ItemStackRequestPacket()
     pk.deserialize(payload)
 
-    assert len(pk.request.request_data) == 1
-    request_data = pk.request.request_data[0]
+    assert len(pk.requests) == 1
+    request_data = pk.requests[0]
 
     assert len(request_data.actions) == 1
     request_action = request_data.actions[0]

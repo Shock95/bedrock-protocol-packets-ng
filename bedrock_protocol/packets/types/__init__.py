@@ -18,7 +18,6 @@ from bedrock_protocol.packets.types.item_stack_request import (
     DropAction,
     ItemStackRequestAction,
     ItemStackRequestData,
-    ItemStackRequest,
 )
 from bedrock_protocol.packets.types.item_stack_response import (
     ItemStackResponse,
@@ -37,7 +36,6 @@ __all__ = [
     "ItemStackRequestSlotInfo",
     "ItemStackRequestAction",
     "ItemStackRequestData",
-    "ItemStackRequest",
     "ItemStackResponse",
     "ItemStackResponseSlotInfo",
     "ItemStackResponseContainerInfo",

@@ -237,22 +237,3 @@ class ItemStackRequestData:
         else:
             stream.set_position(self._read_position)
             self._request_buffer = stream.get_left_buffer()
-
-
-class ItemStackRequest:
-    request_data: List[ItemStackRequestData]
-
-    def __init__(self, request_data: Optional[List[ItemStackRequestData]] = None):
-        self.request_data = request_data or []
-
-    def write(self, stream: BinaryStream) -> None:
-        stream.write_unsigned_varint(len(self.request_data))
-        for request in self.request_data:
-            request.write(stream)
-
-    def read(self, stream: ReadOnlyBinaryStream) -> None:
-        length = stream.get_unsigned_varint()
-        for _ in range(length):
-            data = ItemStackRequestData()
-            data.read(stream)
-            self.request_data.append(data)
