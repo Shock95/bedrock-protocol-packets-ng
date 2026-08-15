@@ -5,7 +5,12 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-from typing import List, Optional, Self
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
+
+from typing import List, Optional
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
 from bedrock_protocol.packets.enums.item_stack_request_action_type import (

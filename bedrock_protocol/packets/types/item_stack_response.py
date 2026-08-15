@@ -5,7 +5,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-from typing import List, Optional, Self
+from typing import List, Optional
 
 from bstream import BinaryStream, ReadOnlyBinaryStream
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
