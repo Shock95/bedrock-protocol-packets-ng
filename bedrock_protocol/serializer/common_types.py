@@ -33,23 +33,6 @@ def write_optional(
         out.write_bool(False)
 
 
-def read_double_optional(
-    stream: BinaryStream,
-    reader: Callable[[BinaryStream], T],
-) -> T | None:
-    read_dummy_optional(stream)
-    return read_optional(stream, reader)
-
-
-def write_double_optional(
-    out: BinaryStream,
-    value: T | None,
-    writer: Callable[[BinaryStream, T], None],
-) -> None:
-    write_dummy_optional(out)
-    write_optional(out, value, writer)
-
-
 def read_list(stream: BinaryStream, reader: Callable[[BinaryStream], T]) -> list[T]:
     count = stream.get_unsigned_varint()
     result: list[T] = []

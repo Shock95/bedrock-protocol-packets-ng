@@ -8,8 +8,9 @@
 from typing import List, Optional
 
 from bstream import BinaryStream, ReadOnlyBinaryStream
+
 from bedrock_protocol.packets.types.full_container_name import FullContainerName
-from bedrock_protocol.serializer.common_types import write_double_optional, read_double_optional, read_list, write_list, \
+from bedrock_protocol.serializer.common_types import read_list, write_list, \
     read_optional, write_optional
 
 
@@ -44,7 +45,7 @@ class ItemStackResponseSlotInfo:
         stream.write_byte(self.slot)
         stream.write_byte(self.hotbar_slot)
         stream.write_byte(self.count)
-        write_double_optional(
+        write_optional(
             stream,
             self.item_stack_id,
             lambda s, v: s.write_varint(v)
@@ -57,7 +58,7 @@ class ItemStackResponseSlotInfo:
         self.slot = stream.get_byte()
         self.hotbar_slot = stream.get_byte()
         self.count = stream.get_byte()
-        self.item_stack_id = read_double_optional(
+        self.item_stack_id = read_optional(
             stream,
             lambda s: s.get_varint()
         )
@@ -115,7 +116,7 @@ class ItemStackResponse:
     def write(self, stream: BinaryStream) -> None:
         stream.write_byte(self.result)
         stream.write_varint(self.request_id)
-        write_double_optional(
+        write_optional(
             stream,
             self.container_infos,
             lambda out, container_infos: write_list(out, container_infos, lambda o, v: v.write(o))
@@ -130,7 +131,7 @@ class ItemStackResponse:
     def read(self, stream: ReadOnlyBinaryStream) -> None:
         self.result = stream.get_byte()
         self.request_id = stream.get_varint()
-        self.container_infos = read_double_optional(
+        self.container_infos = read_optional(
             stream,
             lambda s: read_list(s, self.read_container)
         )

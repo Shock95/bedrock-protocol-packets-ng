@@ -258,4 +258,10 @@ class MinecraftPacketIds(IntEnum):
     ServerboundDataDrivenScreenClosed = 343
     SyncWorldClocks = 344
     ClientboundAttributeLayerSyncPacket = 345
-    EndId = 346
+    ServerStoreInfoPacket = 346
+    ServerPresenceInfoPacket = 347
+    ClientboundUpdateSoundDataPacket = 348
+    SendPartyDestinationCookiePacket = 349
+    PartyDestinationCookieResponsePacket = 350
+    SetPlayerFurnaceOptionsPacket = 351
+    RecordStartedPacket = 352
